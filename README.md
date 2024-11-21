@@ -27,7 +27,9 @@ Selective Transfer Regression (STR) 是一種用於回歸問題的機器學習�
 ## 使用方法
 提供一些基本的使用範例和說明：
 
-### 初始化模型
+### Selective Transfer Regression (STR)
+
+#### 初始化模型
 
 ```python
 from STR import SelectiveTransferRegression
@@ -43,7 +45,7 @@ str_model = SelectiveTransferRegression(
 )
 ```
 
-### 訓練模型
+#### 訓練模型
 
 ```python
 str_model.fit(X_train, y_train, X_test, y_test)
@@ -54,7 +56,7 @@ str_model.fit(X_train, y_train, X_test, y_test)
 - `X_test`: 測試數據特徵，必須是 2D 陣列。
 - `y_test`: 測試數據標籤，必須是 1D 陣列。
 
-### 預測
+#### 預測
 
 ```python
 predictions = str_model.predict(X_new)
@@ -62,13 +64,57 @@ predictions = str_model.predict(X_new)
 
 - `X_new`: 新的測試數據特徵，必須是 2D 陣列。
 
+### Selective Transfer Machine (STM)
+
+#### 簡介
+Selective Transfer Machine (STM) 是一種用於分類問題的機器學習模型，基於支持向量機 (SVM) 和分布匹配技術。STM 專注於在源數據和目標數據之間進行有效的樣本權重調整，以提高分類性能。
+
+#### 功能
+- **支持向量機 (SVM)**：使用 SVM 進行分類分析。
+- **分布匹配**：通過優化樣本權重來匹配源和目標數據的分布。
+- **可視化**：提供模型決策邊界和數據點的可視化功能。
+
+#### 初始化模型
+
+```python
+from STM import SelectiveTransferMachine
+
+stm_model = SelectiveTransferMachine(
+    C=10.0, 
+    kernel='linear', 
+    lambda_reg=1.0, 
+    max_iter=10, 
+    stm_epsilon=0.01, 
+    B=1.0
+)
+```
+
+#### 訓練模型
+
+```python
+stm_model.fit(X_train, y_train, X_test, y_test)
+```
+
+- `X_train`: 訓練數據特徵，必須是 2D 陣列。
+- `y_train`: 訓練數據標籤，必須是 1D 陣列。
+- `X_test`: 測試數據特徵，必須是 2D 陣列。
+- `y_test`: 測試數據標籤，必須是 1D 陣列。
+
+#### 預測
+
+```python
+predictions = stm_model.predict(X_new)
+```
+
+- `X_new`: 新的測試數據特徵，必須是 2D 陣列。
+
 ### 可視化
 
-訓練過程中，模型會自動生成一個圖形，顯示 STR 和普通 SVR 的決策邊界以及數據點。
+訓練過程中，模型會自動生成一個圖形，顯示 STR 和 STM 的決策邊界以及數據點。
 
 ## 範例
 
-在 `STR.py` 文件中提供了一個簡單的範例，展示了如何生成合成數據並訓練 STR 模型。
+在 `STR.py` 和 `STM.py` 文件中提供了一個簡單的範例，展示了如何生成合成數據並訓練 STR 和 STM 模型。
 
 ## 貢獻
 
