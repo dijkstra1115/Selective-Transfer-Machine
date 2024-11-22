@@ -12,11 +12,11 @@ $$
 
 定义优化目标为：
 
-$
+$$
 \min_{s} \quad \frac{1}{n_{\text{tr}}} \sum_{i=1}^{n_{\text{tr}}} s_i \phi(x_i^{\text{tr}}) - \frac{1}{n_{\text{te}}} \sum_{j=1}^{n_{\text{te}}} \phi(x_j^{\text{te}})
-$
+$$
 
-其中，$\phi$ 是核函数，$x_i^{\text{tr}}$ 为训练集样本，$x_j^{\text{te}}$ 为测试集样本，$n_{\text{tr}}$ 和 $n_{\text{te}}$ 分别为训练集和测试集的样本数量，$s$ 是待优化的变量向量。
+其中， $\phi$ 是核函数， $x_i^{\text{tr}}$ 为训练集样本， $x_j^{\text{te}}$ 为测试集样本， $n_{\text{tr}}$ 和 $n_{\text{te}}$ 分别为训练集和测试集的样本数量， $s$ 是待优化的变量向量。
 
 ## 目标函数的展开
 
@@ -76,7 +76,7 @@ $$
 u^\top u = \frac{1}{n_{\text{tr}}^2} \sum_{i=1}^{n_{\text{tr}}} \sum_{j=1}^{n_{\text{tr}}} s_i s_j k(x_i^{\text{tr}}, x_j^{\text{tr}}) = \frac{1}{n_{\text{tr}}^2} s^\top K s
 $$
 
-其中，$K$ 为训练集之间的核矩阵，定义为：
+其中， $K$ 为训练集之间的核矩阵，定义为：
 
 $$
 K_{ij} = k(x_i^{\text{tr}}, x_j^{\text{tr}})
