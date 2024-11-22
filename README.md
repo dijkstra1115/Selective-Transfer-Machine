@@ -7,9 +7,9 @@ Selective Transfer Regression (STR) 是一種用於回歸問題的機器學習�
 
 本文将详细推导如何将以下优化问题转化为标准的二次规划（Quadratic Programming, QP）形式：
 
-\[
+$$
 (\mathbf{w}, \mathbf{s}) = \arg\min_{\mathbf{w}, \mathbf{s}} R_{\mathbf{w}}(\mathcal{D}^{\text{tr}}, \mathbf{s}) + \lambda \Omega_{\mathbf{s}}(\mathbf{X}^{\text{tr}}, \mathbf{X}^{\text{te}})
-\]
+$$
 
 ## 原始优化问题
 
