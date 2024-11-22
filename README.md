@@ -123,3 +123,7 @@ predictions = stm_model.predict(X_new)
 ## 授權
 
 此項目基於 MIT 許可證。
+
+## 參考資料
+
+- CHU, Wen-Sheng; DE LA TORRE, Fernando; COHN, Jeffery F. [Selective transfer machine for personalized facial action unit detection](https://openaccess.thecvf.com/content_cvpr_2013/papers/Chu_Selective_Transfer_Machine_2013_CVPR_paper.pdf). In: Proceedings of the IEEE conference on computer vision and pattern recognition. 2013. p. 3515-3522.
