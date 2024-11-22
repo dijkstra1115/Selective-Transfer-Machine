@@ -205,7 +205,6 @@ Selective Transfer Regression (STR) 和 Selective Transfer Machine (STM) 是兩�
 - **Selective Transfer Regression (STR)**：用於回歸問題，結合支持向量回歸 (SVR) 和分布匹配技術。
 - **Selective Transfer Machine (STM)**：用於分類問題，基於支持向量機 (SVM) 和分布匹配技術。
 
----
 
 ## Selective Transfer Regression (STR)
 
@@ -249,7 +248,6 @@ predictions = str_model.predict(X_new)
 
 - `X_new`: 新的測試數據特徵，必須是 2D 陣列。
 
----
 
 ## Selective Transfer Machine (STM)
 
@@ -293,7 +291,6 @@ predictions = stm_model.predict(X_new)
 
 - `X_new`: 新的測試數據特徵，必須是 2D 陣列。
 
----
 
 ## 安裝
 
@@ -312,25 +309,21 @@ predictions = stm_model.predict(X_new)
    pip install numpy scikit-learn cvxopt matplotlib
    ```
 
----
 
 ## 可視化
 
 訓練過程中，STR 和 STM 模型會自動生成圖形，顯示模型的決策邊界和數據點的分佈情況。
 
----
 
 ## 範例
 
 在 `STR.py` 和 `STM.py` 文件中提供了簡單範例，展示了如何生成合成數據並訓練 STR 和 STM 模型。
 
----
 
 ## 貢獻
 
 歡迎對此項目進行貢獻！請提交 pull request 或報告問題。
 
----
 
 ## 授權
 
