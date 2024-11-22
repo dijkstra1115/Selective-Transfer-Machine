@@ -216,7 +216,7 @@ Selective Transfer Regression (STR) 和 Selective Transfer Machine (STM) 是兩�
 
 ### 初始化模型
 
-\`\`\`python
+```python
 from STR import SelectiveTransferRegression
 
 str_model = SelectiveTransferRegression(
@@ -228,13 +228,13 @@ str_model = SelectiveTransferRegression(
     stm_epsilon=0.5, 
     B=5.0
 )
-\`\`\`
+```
 
 ### 訓練模型
 
-\`\`\`python
+```python
 str_model.fit(X_train, y_train, X_test, y_test)
-\`\`\`
+```
 
 - `X_train`: 訓練數據特徵，必須是 2D 陣列。
 - `y_train`: 訓練數據標籤，必須是 1D 陣列。
@@ -243,9 +243,9 @@ str_model.fit(X_train, y_train, X_test, y_test)
 
 ### 預測
 
-\`\`\`python
+```python
 predictions = str_model.predict(X_new)
-\`\`\`
+```
 
 - `X_new`: 新的測試數據特徵，必須是 2D 陣列。
 
@@ -260,7 +260,7 @@ predictions = str_model.predict(X_new)
 
 ### 初始化模型
 
-\`\`\`python
+```python
 from STM import SelectiveTransferMachine
 
 stm_model = SelectiveTransferMachine(
@@ -271,13 +271,13 @@ stm_model = SelectiveTransferMachine(
     stm_epsilon=0.01, 
     B=1.0
 )
-\`\`\`
+```
 
 ### 訓練模型
 
-\`\`\`python
+```python
 stm_model.fit(X_train, y_train, X_test, y_test)
-\`\`\`
+```
 
 - `X_train`: 訓練數據特徵，必須是 2D 陣列。
 - `y_train`: 訓練數據標籤，必須是 1D 陣列。
@@ -286,9 +286,10 @@ stm_model.fit(X_train, y_train, X_test, y_test)
 
 ### 預測
 
-\`\`\`python
+```python
 predictions = stm_model.predict(X_new)
-\`\`\`
+```
+
 
 - `X_new`: 新的測試數據特徵，必須是 2D 陣列。
 
@@ -299,17 +300,17 @@ predictions = stm_model.predict(X_new)
 請按照以下步驟安裝和配置此項目：
 
 1. 克隆此存儲庫：
-   \`\`\`bash
+   ```bash
    git clone https://github.com/yourusername/yourproject.git
-   \`\`\`
+   ```
 2. 進入項目目錄：
-   \`\`\`bash
+   ```bash
    cd yourproject
-   \`\`\`
+   ```
 3. 安裝所需的依賴：
-   \`\`\`bash
+   ```bash
    pip install numpy scikit-learn cvxopt matplotlib
-   \`\`\`
+   ```
 
 ---
 
