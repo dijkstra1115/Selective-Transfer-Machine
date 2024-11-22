@@ -15,9 +15,9 @@ $$
 
 定义优化目标为：
 
-$$
+$
 \min_{\mathbf{s}} \quad \frac{1}{n_{\text{tr}}} \sum_{i=1}^{n_{\text{tr}}} s_i \phi(\mathbf{x}_i^{\text{tr}}) - \frac{1}{n_{\text{te}}} \sum_{j=1}^{n_{\text{te}}} \phi(\mathbf{x}_j^{\text{te}})
-$$
+$
 
 其中，\(\phi\) 是核函数，\(\mathbf{x}_i^{\text{tr}}\) 为训练集样本，\(\mathbf{x}_j^{\text{te}}\) 为测试集样本，\(n_{\text{tr}}\) 和 \(n_{\text{te}}\) 分别为训练集和测试集的样本数量，\(\mathbf{s}\) 是待优化的变量向量。
 
