@@ -158,10 +158,10 @@ class SelectiveTransferMachine:
     def fit(self, X_train, y_train, X_test, y_test):
         """
         訓練 STM 模型
-        :param X_train: 訓練數據特徵
-        :param y_train: 訓練數據標籤
-        :param X_test: 測試數據特徵（無標籤）
-        :param y_test: 測試數據標籤
+        :param X_train: 訓練數據特徵 array size (n, d)
+        :param y_train: 訓練數據標籤 array size (n, d)
+        :param X_test: 測試數據特徵 array size (n,)
+        :param y_test: 測試數據標籤 array size (n,)
         """
         n_train = X_train.shape[0]
         self.weights = np.ones(n_train) / n_train  # 初始化權重
