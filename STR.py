@@ -12,6 +12,7 @@ from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 
 from cvxopt import matrix, solvers
+solvers.options['show_progress'] = False
 
 import matplotlib.pyplot as plt
 
