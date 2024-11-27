@@ -7,6 +7,7 @@ y_train and y_test must be 1D array (n,)
 import numpy as np
 from sklearn.svm import SVR
 from sklearn.metrics.pairwise import rbf_kernel
+from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 
@@ -15,7 +16,7 @@ from cvxopt import matrix, solvers
 import matplotlib.pyplot as plt
 
 class SelectiveTransferRegression:
-    def __init__(self, C=1.0, epsilon=0.1, kernel='linear', gamma='scale', lambda_reg=1.0, max_iter=10, stm_epsilon=0.01, B=1.0):
+    def __init__(self, C=1.0, epsilon=0.1, kernel='linear', gamma='scale', lambda_reg=1.0, max_iter=10, stm_epsilon=0.01, B=1.0, visualization=False):
         """
         初始化 STM 類別
         :param C: SVM 的正則化參數
@@ -35,6 +36,7 @@ class SelectiveTransferRegression:
         self.stm_epsilon = stm_epsilon
         self.B = B
         self.epsilon = epsilon
+        self.visualization = visualization
 
 
     def _compute_weights(self, X_train, X_test, svr, y_train):
@@ -91,7 +93,7 @@ class SelectiveTransferRegression:
         """
         訓練 STR 模型
         :param X_train: 訓練數據特徵 array size (n, d)
-        :param y_train: 訓練數據標籤 array siez (n,)
+        :param y_train: 訓練數據標籤 array size (n,)
         :param X_test: 測試數據特徵 array size (m, d)
         :param y_test: 測試數據標籤 array size (m,)
         """
@@ -108,10 +110,11 @@ class SelectiveTransferRegression:
             print(f"Iteration {iteration + 1}: Updated weights (min={self.weights.min():.4f}, max={self.weights.max():.4f})")
 
         self.svr = svr
-        self.evaluate_and_plot(X_train, y_train, X_test, y_test)
+        if self.visualization:
+            self._visualize(X_train, y_train, X_test, y_test)
 
 
-    def evaluate_and_plot(self, X_train, y_train, X_test, y_test):
+    def _visualize(self, X_train, y_train, X_test, y_test):
         """
         預測並繪製結果
         :param X_train: 訓練數據特徵
@@ -124,16 +127,20 @@ class SelectiveTransferRegression:
         plt.figure(figsize=(10, 6))
         
         # 訓練資料
-        plt.scatter(X_train, y_train, color='blue', label='Train', marker='o')
+        high_weight_mask = self.weights > np.percentile(self.weights, 90)  # 取權重前 5% 的樣本
+        plt.scatter(X_train[~high_weight_mask], y_train[~high_weight_mask], color='blue', label='Train', marker='o')
+        plt.scatter(X_train[high_weight_mask], y_train[high_weight_mask], color='orange', label='Top 5% weight', marker='o', s=50)
         
         # 測試資料
-        plt.scatter(X_test, y_test, color='red', label='Test', marker='s')
+        plt.scatter(X_test, y_test, color='red', label='Test', marker='o')
 
         # 繪製 STR 的決策線
         xlim = plt.xlim()
         xx = np.linspace(xlim[0], xlim[1], 100).reshape(-1, 1)
         yy = self.svr.predict(xx)
-        plt.plot(xx, yy, color='k', linestyle='--', label='STR')
+        plt.plot(xx, yy + self.epsilon, color='blue', linestyle='--', label='U/L Bound')
+        plt.plot(xx, yy - self.epsilon, color='blue', linestyle='--')
+        plt.plot(xx, yy, color='k', linestyle='-', label='STR')
 
         # 繪製普通 SVR 的決策線
         normal_svr = SVR(C=self.C, epsilon=self.epsilon, kernel=self.kernel)
@@ -144,8 +151,40 @@ class SelectiveTransferRegression:
         plt.title('STR Decision Boundary and Data Points')
         plt.xlabel('Feature')
         plt.ylabel('Target')
+
+        # 添加超参数的文本注释
+        plt.text(0.05, 0.95, f'C: {self.C}\nB: {self.B}\nstm_epsilon: {self.stm_epsilon}', 
+                 transform=plt.gca().transAxes, fontsize=12, verticalalignment='top', 
+                 bbox=dict(facecolor='white', alpha=0.5, edgecolor='black'))
+
         plt.legend()
         plt.show()
+
+
+    def evaluate(self, X_test, y_test):
+        """
+        評估模型
+        :param X_test: 測試數據特徵 array size (m, d)
+        :param y_test: 測試數據標籤 array size (m,)
+        """
+        y_pred = self.predict(X_test)
+        y_error = y_pred - y_test
+        mean = np.mean(y_error)
+        std = np.std(y_error)
+        suc_13 = np.sum(np.abs(y_error) < 13) / len(y_error)
+        mae = mean_absolute_error(y_test, y_pred)
+        r2 = r2_score(y_test, y_pred)
+
+        metrics = {
+            'mae': mae,
+            'mean_error': mean,
+            'std_error': std,
+            'suc_13': suc_13,
+            'r2_score': r2,
+            'error_correlation': np.corrcoef(y_test, y_error)[0, 1]
+        }
+
+        return metrics
 
 
     def predict(self, X):
@@ -162,14 +201,16 @@ if __name__ == "__main__":
     
     # 創建合成數據
     X_train = np.random.uniform(-2, 2, size=(200, 1))  # 生成 200 個隨機點
-    y_train = (X_train**2 - 0.5 * X_train - 1.5 + np.random.normal(0, 0.5, size=(200, 1))).ravel()
+    y_train = (X_train**2 - 0.5 * X_train - 1.5 + np.random.normal(0, 0.5, size=(200, 1))).ravel() # 因為 y_train 需要是 1D array (n,) 而不能是 2D array (n, 1)
 
     # X_test = np.random.uniform(-1.7, -0.7, size=(50, 1))  # 生成 50 個隨機點
     # y_test = (-2.7 * X_test -2.6 + np.random.normal(0, 0.5, size=(50, 1))).ravel()
 
     X_test = np.random.uniform(0.5, 1, size=(50, 1))  # 生成 50 個隨機點
-    y_test = np.random.uniform(-2, -3, size=(50, 1)).ravel()
+    y_test = np.random.uniform(-2, -3, size=(50, 1)).ravel() # 因為 y_test 需要是 1D array (n,) 而不能是 2D array (n, 1)
 
     # 初始化 STR 並訓練
-    str = SelectiveTransferRegression(C=10.0, epsilon=0.1, kernel='linear', lambda_reg=1.0, max_iter=5, stm_epsilon=0.5, B=5.0)
+    str = SelectiveTransferRegression(C=10.0, epsilon=0.1, kernel='rbf', lambda_reg=1.0, max_iter=5, stm_epsilon=0.5, B=5.0, visualization=True)
     str.fit(X_train, y_train, X_test, y_test)
+    metrics = str.evaluate(X_test, y_test)
+    print(metrics)

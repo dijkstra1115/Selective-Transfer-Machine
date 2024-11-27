@@ -9,7 +9,7 @@ from cvxopt import matrix, solvers
 import matplotlib.pyplot as plt
 
 class SelectiveTransferMachine:
-    def __init__(self, C=1.0, kernel='linear', gamma='scale', lambda_reg=1.0, max_iter=10, stm_epsilon=0.01, B=1.0):
+    def __init__(self, C=1.0, kernel='linear', gamma='scale', lambda_reg=1.0, max_iter=10, stm_epsilon=0.01, B=1.0, visualization=False):
         """
         初始化 STM 類別
         :param C: SVM 的正則化參數
@@ -27,6 +27,7 @@ class SelectiveTransferMachine:
         self.max_iter = max_iter
         self.stm_epsilon = stm_epsilon
         self.B = B
+        self.visualization = visualization
 
 
     def _compute_weights(self, X_train, X_test, svc, y_train):
@@ -176,10 +177,11 @@ class SelectiveTransferMachine:
             print(f"Iteration {iteration + 1}: Updated weights (min={self.weights.min():.4f}, max={self.weights.max():.4f})")
 
         self.svc = svc
-        self.evaluate_and_plot(X_train, y_train, X_test, y_test)
+        if self.visualization:
+            self._visualize(X_train, y_train, X_test, y_test)
 
 
-    def evaluate_and_plot(self, X_train, y_train, X_test, y_test):
+    def _visualize(self, X_train, y_train, X_test, y_test):
         """
         預測並繪製結果
         :param X_train: 訓練數據特徵
@@ -277,5 +279,5 @@ if __name__ == "__main__":
     print(y_train.shape, y_test.shape)
 
     # 初始化 STM 並訓練
-    stm = SelectiveTransferMachine(C=10.0, kernel='linear', lambda_reg=1.0, max_iter=10, stm_epsilon=0, B=10.0)
+    stm = SelectiveTransferMachine(C=10.0, kernel='linear', lambda_reg=1.0, max_iter=10, stm_epsilon=0, B=10.0, visualization=True)
     stm.fit(X_train, y_train, X_test, y_test)
