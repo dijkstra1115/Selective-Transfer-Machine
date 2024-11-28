@@ -142,6 +142,7 @@ class SelectiveTransferRegression:
         plt.plot(xx, yy + self.epsilon, color='blue', linestyle='--', label='U/L Bound')
         plt.plot(xx, yy - self.epsilon, color='blue', linestyle='--')
         plt.plot(xx, yy, color='k', linestyle='-', label='STR')
+        plt.fill_between(xx.ravel(), yy - self.epsilon, yy + self.epsilon, color='blue', alpha=0.1, label='Epsilon Tube')
 
         # 繪製普通 SVR 的決策線
         normal_svr = SVR(C=self.C, epsilon=self.epsilon, kernel=self.kernel)
